@@ -28,6 +28,9 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0"
   },
+  "engines": {
+    "node": "10.x"
+  },
   "devDependencies": {
     "@types/bcrypt": "^3.0.1",
     "@types/cookie-parser": "^1.4.2",
