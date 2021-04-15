@@ -81,6 +81,28 @@ class AuthController {
       return res.status(500).json({ message: "Internal Server Error" });
     }
   }
+
+  async authCheck(req: Request, res: Response): Promise<void> {
+    try {
+      const saraLakCookie = req.cookies.saraLak;
+      if (saraLakCookie) {
+        const { id, email, phoneNo }: any = jwt.verify(
+          saraLakCookie,
+          SECRETS.JWTSECRET
+        );
+        if (id) {
+          return res.send({ isAuth: true, user: { email, phoneNo } })
+        } else {
+          return res.send({ isAuth: false });
+        }
+      } else {
+        return res.send({ isAuth: false });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
 }
 
 export default new AuthController();
