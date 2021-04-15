@@ -4,10 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "prebuild": "rm -rf dist; tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "prestart": "npm run build",
-    "predev": "npm run build",
     "start": "NODE_ENV=production node .",
     "dev": "NODE_ENV=development nodemon ."
   },

@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import cors from 'cors';
 import * as admin from "firebase-admin";
-import firebaseCreds from '../firebase-creds.json';
+import firebaseCreds from './firebase-creds.json';
 
 const serviceAccount = firebaseCreds as admin.ServiceAccount;
 
