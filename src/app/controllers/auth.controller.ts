@@ -49,7 +49,7 @@ class AuthController {
               sameSite: true,
               maxAge: 1000 * 60 * 60 * 8
             });
-            return res.send({ message: "Login successfull" });
+            return res.send({ message: "Login successfull", token });
           } else {
             return res
               .status(400)
