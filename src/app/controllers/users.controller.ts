@@ -1,5 +1,6 @@
 /* eslint-disable */
 import * as bcrypt from "bcrypt";
+import { v4 as uuidv4 } from 'uuid';
 import {fireStoreIns} from "../../firebaseIns";
 import {Request, Response, User} from "../../interfaces";
 
@@ -24,16 +25,17 @@ class UsersController {
       const userData: User = req.body;
       const {id, email, phoneNo}: any = req.user;
       const hashedPassword = await bcrypt.hash(userData.password, 8);
+      const userId = uuidv4();
       const user = await fireStoreIns
-          .collection("users")
-          .add({
+          .collection("users").doc(userId)
+          .set({
             ...userData,
             password: hashedPassword,
             createdAt: new Date(),
             updatedAt: new Date(),
             createdBy: phoneNo || email || id,
           });
-      return res.send({message: "User added", id: user.id});
+      return res.send({message: "User added", id: userId});
     } catch (err) {
       console.error(err);
       return res.status(500).json({message: "Internal Server Error"});
