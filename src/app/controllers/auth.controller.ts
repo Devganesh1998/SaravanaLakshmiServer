@@ -2,6 +2,7 @@
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { fireStoreIns } from "../../firebaseIns";
+import * as firebaseAdmin from "firebase-admin";
 import { Request, Response } from "../../interfaces";
 import SECRETS from "../utils/getSecrets";
 
@@ -49,7 +50,8 @@ class AuthController {
               sameSite: true,
               maxAge: 1000 * 60 * 60 * 8
             });
-            return res.send({ message: "Login successfull", token });
+            const customToken = await firebaseAdmin.auth().createCustomToken(userId);
+            return res.send({ message: "Login successfull", firebaseToken: customToken, isAdmin });
           } else {
             return res
               .status(400)
@@ -86,12 +88,12 @@ class AuthController {
     try {
       const saraLakCookie = req.cookies.saraLak;
       if (saraLakCookie) {
-        const { id, email, phoneNo }: any = jwt.verify(
+        const { id, email, phoneNo, isAdmin }: any = jwt.verify(
           saraLakCookie,
           SECRETS.JWTSECRET
         );
         if (id) {
-          return res.send({ isAuth: true, user: { email, phoneNo } })
+          return res.send({ isAuth: true, user: { email, phoneNo, isAdmin } })
         } else {
           return res.send({ isAuth: false });
         }
